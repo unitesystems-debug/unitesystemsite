@@ -44,6 +44,14 @@ If you use SSH instead of HTTPS, use `git@github.com:<your-username>/<your-repo>
 
 ---
 
+## 2b. Already have a running server with Apache/PHP/MySQL?
+
+If your EC2 instance already has Apache2, PHP, MySQL, and Composer installed
+(as confirmed via `systemctl is-active apache2/mysql`, `php -v`, `composer
+--version`), skip straight to **section 6 (Deploy the code)**, but use the
+**Apache virtual host** in section 7b instead of the Nginx one, since Apache
+is already your running web server.
+
 ## 3. Provision the AWS server (EC2)
 
 1. Launch an EC2 instance — **Ubuntu 24.04 LTS**, `t3.small` or larger
@@ -99,7 +107,7 @@ sudo mysql -e "GRANT ALL PRIVILEGES ON unitesystems.* TO 'unitesystems'@'localho
 ```bash
 sudo mkdir -p /var/www/unitesystems
 sudo chown $USER:$USER /var/www/unitesystems
-git clone https://github.com/<your-username>/<your-repo>.git /var/www/unitesystems
+git clone https://github.com/unitesystems-debug/unitesystemsite.git /var/www/unitesystems
 cd /var/www/unitesystems
 
 composer install --no-dev --optimize-autoloader
@@ -226,11 +234,58 @@ sudo systemctl reload nginx
 
 ---
 
+## 7b. Apache virtual host (use this instead if Apache2 is already your web server)
+
+Enable the required modules first:
+
+```bash
+sudo a2enmod rewrite
+sudo systemctl restart apache2
+```
+
+Create `/etc/apache2/sites-available/unitesystems.conf`:
+
+```apache
+<VirtualHost *:80>
+    ServerName your-domain-or-public-ip
+    DocumentRoot /var/www/unitesystems/public
+
+    <Directory /var/www/unitesystems/public>
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/unitesystems-error.log
+    CustomLog ${APACHE_LOG_DIR}/unitesystems-access.log combined
+</VirtualHost>
+```
+
+Enable it and disable the default site:
+
+```bash
+sudo a2ensite unitesystems.conf
+sudo a2dissite 000-default.conf
+sudo apache2ctl configtest
+sudo systemctl reload apache2
+```
+
+---
+
 ## 8. HTTPS (Let's Encrypt)
 
+Only needed once you have a real domain pointed at the server (a bare IP
+address cannot get a certificate).
+
+**Nginx:**
 ```bash
 sudo apt install -y certbot python3-certbot-nginx
 sudo certbot --nginx -d your-domain.com -d www.your-domain.com
+```
+
+**Apache:**
+```bash
+sudo apt install -y certbot python3-certbot-apache
+sudo certbot --apache -d your-domain.com -d www.your-domain.com
 ```
 
 Certbot auto-configures the HTTPS server block and sets up renewal.
