@@ -1,0 +1,7 @@
+*
+!.gitignore
+!branding
+!branding/**
+!content
+!content/**
+livewire-tmp

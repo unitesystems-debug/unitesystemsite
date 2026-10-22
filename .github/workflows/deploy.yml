@@ -1,0 +1,32 @@
+name: Deploy to AWS
+
+# Triggers on every push to main. Requires these repository secrets to be
+# configured under Settings -> Secrets and variables -> Actions:
+#   HOST         - server IP or domain
+#   USERNAME     - SSH user (e.g. ubuntu)
+#   SSH_KEY      - private key with access to the server
+#   DEPLOY_PATH  - absolute path to the project on the server
+#                  (e.g. /var/www/unitesystems)
+#
+# Until these secrets are added, this workflow will simply be skipped/fail
+# harmlessly — it does not run automatically against a server that isn't
+# configured.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ${{ secrets.DEPLOY_PATH }}
+            bash deploy/deploy.sh
