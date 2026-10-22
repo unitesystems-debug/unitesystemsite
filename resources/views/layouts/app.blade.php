@@ -46,9 +46,6 @@
                         <form method="POST" action="{{ route('logout') }}">@csrf
                             <button class="text-sm font-medium text-slate-ink hover:text-brand-red-deep">Sign out</button>
                         </form>
-                    @else
-                        <a href="{{ route('register') }}" class="text-sm font-medium text-slate-ink hover:text-brand-red-deep">Create Profile</a>
-                        <a href="{{ route('login') }}" class="text-sm font-medium text-slate-ink hover:text-brand-red-deep">Candidate Sign In</a>
                     @endauth
                     <a href="{{ $siteNavCtaHref }}" class="inline-flex items-center rounded-full bg-brand-red-deep px-5 py-2.5 text-sm font-semibold text-white hover:bg-navy transition">{{ $siteNavCtaLabel }}</a>
                 </div>
@@ -73,9 +70,6 @@
                         <form method="POST" action="{{ route('logout') }}">@csrf
                             <button class="text-left text-sm font-medium text-slate-ink">Sign out</button>
                         </form>
-                    @else
-                        <a href="{{ route('register') }}" class="text-sm font-medium text-slate-ink">Create Profile</a>
-                        <a href="{{ route('login') }}" class="text-sm font-medium text-slate-ink">Candidate Sign In</a>
                     @endauth
                     <a href="{{ $siteNavCtaHref }}" class="inline-flex justify-center rounded-full bg-brand-red-deep px-5 py-2.5 text-sm font-semibold text-white">{{ $siteNavCtaLabel }}</a>
                 </div>
