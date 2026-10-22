@@ -13,6 +13,32 @@ use Filament\Schemas\Schema;
 
 class ContentItemForm
 {
+    /**
+     * Buckets the many `group` values into the site pages they actually
+     * appear on, so the admin list can show one tab per page instead of a
+     * long flat list / dropdown of 24 raw group keys.
+     */
+    public const PAGE_GROUPS = [
+        'Home page' => [
+            'home_trust', 'home_challenges', 'home_solutions', 'home_process',
+            'home_humantech_professionals', 'home_humantech_organizations', 'home_humantech_hub_layers',
+            'professional_benefits', 'employer_points', 'employer_sectors',
+            'testimonials', 'insights',
+        ],
+        'About page' => [
+            'principles', 'about_facts', 'about_values', 'about_locations',
+        ],
+        'Services page' => [
+            'home_solutions', 'specialties', 'specialty_groups', 'industries',
+        ],
+        'Contact page' => [
+            'faqs_employers', 'faqs_professionals', 'contact_next_steps',
+        ],
+        'Header & footer' => [
+            'nav_main', 'footer_columns',
+        ],
+    ];
+
     public const GROUPS = [
         'nav_main' => 'Header navigation links',
         'home_trust' => 'Home — trust badges',
