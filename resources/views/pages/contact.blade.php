@@ -87,7 +87,7 @@
 
                 <label class="flex items-start gap-2.5 text-xs text-slate-ink leading-relaxed">
                     <input type="checkbox" name="sms_consent" value="1" class="mt-0.5 h-4 w-4 shrink-0 rounded border-line-strong text-brand-red-deep focus:ring-brand-red-deep">
-                    <span>I agree to receive SMS updates about my request. Message & data rates may apply. Reply STOP to opt out.</span>
+                    <span>By providing a phone number and submitting this form you are consenting to be contacted by SMS text message. Message and Data Rates may apply. Message frequency may vary. You can STOP messaging by sending STOP and get more help by sending HELP <em>at any time</em>. View our <a href="https://www.unitehealthstaff.com/privacy-policy" class="underline hover:text-brand-red-deep">Privacy Policy</a>.</span>
                 </label>
 
                 <button class="w-full rounded-full bg-brand-red-deep px-6 py-3 text-sm font-semibold text-white hover:bg-navy transition shadow-sm">Send message</button>
