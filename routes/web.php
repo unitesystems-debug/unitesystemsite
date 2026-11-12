@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/services', [PageController::class, 'services'])->name('services');
+Route::get('/services/healthcare', [PageController::class, 'servicesHealthcare'])->name('services.healthcare');
+Route::get('/services/information-technology', [PageController::class, 'servicesIt'])->name('services.it');
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 
 Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');

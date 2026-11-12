@@ -31,6 +31,12 @@ class ContentItemForm
         'Services page' => [
             'home_solutions', 'specialties', 'specialty_groups', 'industries',
         ],
+        'Services — Healthcare page' => [
+            'services_healthcare_roles', 'services_healthcare_specialties',
+        ],
+        'Services — IT page' => [
+            'services_it_roles', 'services_it_specialties',
+        ],
         'Contact page' => [
             'faqs_employers', 'faqs_professionals', 'contact_next_steps',
         ],
@@ -58,6 +64,10 @@ class ContentItemForm
         'specialties' => 'Specialties we place (simple list)',
         'specialty_groups' => 'Services — specialty groups',
         'industries' => 'Services — industries',
+        'services_healthcare_roles' => 'Services (Healthcare) — role chips',
+        'services_healthcare_specialties' => 'Services (Healthcare) — specialty groups',
+        'services_it_roles' => 'Services (IT) — role chips',
+        'services_it_specialties' => 'Services (IT) — specialty groups',
         'faqs_employers' => 'Contact — FAQs for employers',
         'faqs_professionals' => 'Contact — FAQs for professionals',
         'about_values' => 'About — core values',

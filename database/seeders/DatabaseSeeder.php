@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             SettingsSeeder::class,
             ContentSeeder::class,
             HumanTechSeeder::class,
+            ServicesSubpagesSeeder::class,
             JobPostingSeeder::class,
         ]);
     }

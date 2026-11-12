@@ -23,6 +23,8 @@ class ContentTextForm
         'contact' => 'Contact page',
         'privacy' => 'Privacy policy',
         'footer' => 'Footer',
+        'services_healthcare' => 'Services — Healthcare page',
+        'services_it' => 'Services — Information Technology page',
     ];
 
     public static function configure(Schema $schema): Schema

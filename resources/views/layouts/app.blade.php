@@ -32,7 +32,21 @@
 
                 <nav class="hidden lg:flex items-center gap-7">
                     @foreach($siteNav as $item)
-                        <a href="{{ $item->extra_text ?: '#' }}" class="text-sm font-medium text-slate-ink hover:text-brand-blue-deep transition">{{ $item->title }}</a>
+                        @if($item->title === 'Services')
+                            <div class="relative" x-data="{ servicesOpen: false }" @mouseenter="servicesOpen = true" @mouseleave="servicesOpen = false">
+                                <button @click="servicesOpen = !servicesOpen" class="inline-flex items-center gap-1 text-sm font-medium text-slate-ink hover:text-brand-blue-deep transition">
+                                    {{ $item->title }}
+                                    <svg class="w-3.5 h-3.5 transition-transform" :class="{ 'rotate-180': servicesOpen }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                                </button>
+                                <div x-show="servicesOpen" x-cloak x-transition
+                                     class="absolute top-full left-0 mt-2 w-72 rounded-xl border border-line bg-white shadow-lg py-2 z-50">
+                                    <a href="{{ route('services.healthcare') }}" class="block px-4 py-2.5 text-sm font-medium text-slate-ink hover:bg-ice hover:text-brand-red-deep transition">Healthcare</a>
+                                    <a href="{{ route('services.it') }}" class="block px-4 py-2.5 text-sm font-medium text-slate-ink hover:bg-ice hover:text-brand-red-deep transition">Information Technology</a>
+                                </div>
+                            </div>
+                        @else
+                            <a href="{{ $item->extra_text ?: '#' }}" class="text-sm font-medium text-slate-ink hover:text-brand-blue-deep transition">{{ $item->title }}</a>
+                        @endif
                     @endforeach
                 </nav>
 
@@ -58,7 +72,20 @@
 
             <div x-show="open" x-cloak x-transition class="lg:hidden pb-5 space-y-1 border-t border-line pt-3">
                 @foreach($siteNav as $item)
-                    <a href="{{ $item->extra_text ?: '#' }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-ink hover:bg-ice">{{ $item->title }}</a>
+                    @if($item->title === 'Services')
+                        <div x-data="{ servicesOpen: false }">
+                            <button @click="servicesOpen = !servicesOpen" class="w-full flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-ink hover:bg-ice">
+                                {{ $item->title }}
+                                <svg class="w-3.5 h-3.5 transition-transform" :class="{ 'rotate-180': servicesOpen }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                            </button>
+                            <div x-show="servicesOpen" x-cloak x-transition class="pl-6 space-y-1">
+                                <a href="{{ route('services.healthcare') }}" class="block rounded-lg px-3 py-2 text-sm text-slate-ink hover:bg-ice">Healthcare</a>
+                                <a href="{{ route('services.it') }}" class="block rounded-lg px-3 py-2 text-sm text-slate-ink hover:bg-ice">Information Technology</a>
+                            </div>
+                        </div>
+                    @else
+                        <a href="{{ $item->extra_text ?: '#' }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-ink hover:bg-ice">{{ $item->title }}</a>
+                    @endif
                 @endforeach
                 <div class="pt-3 flex flex-col gap-2 px-3">
                     @auth

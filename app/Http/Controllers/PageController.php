@@ -31,6 +31,28 @@ class PageController extends Controller
         ]);
     }
 
+    public function servicesHealthcare()
+    {
+        $t = fn (string $key, string $default = '') => ContentText::text('services_healthcare', $key, $default);
+
+        return view('pages.services-detail', [
+            't' => $t,
+            'roles' => ContentItem::group('services_healthcare_roles'),
+            'specialtyGroups' => ContentItem::group('services_healthcare_specialties'),
+        ]);
+    }
+
+    public function servicesIt()
+    {
+        $t = fn (string $key, string $default = '') => ContentText::text('services_it', $key, $default);
+
+        return view('pages.services-detail', [
+            't' => $t,
+            'roles' => ContentItem::group('services_it_roles'),
+            'specialtyGroups' => ContentItem::group('services_it_specialties'),
+        ]);
+    }
+
     public function privacy()
     {
         $t = fn (string $key, string $default = '') => ContentText::text('privacy', $key, $default);
