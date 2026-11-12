@@ -34,6 +34,9 @@ class ServicesSubpagesSeeder extends Seeder
             'hero_title' => 'Specialist IT recruiters from the industry.',
             'hero_intro' => 'Information technology moves fast. Our recruiters come from the industry and bring deep domain expertise, helping companies acquire the talent to adapt, meet everyday challenges and capitalize on new opportunities.',
             'roles_label' => 'Roles we staff',
+            'specialties_eyebrow' => 'Specialties we place',
+            'specialties_title' => 'From infrastructure to the back office.',
+            'specialties_intro' => 'A wide range of technology and business-support professionals — and many more roles beyond what\'s listed here.',
             'cta_title' => 'Need IT talent, fast?',
             'cta_body' => 'Tell us about your staffing needs and a recruiter will respond with a clear plan.',
             'cta_label' => 'Request Talent',
@@ -70,6 +73,13 @@ class ServicesSubpagesSeeder extends Seeder
             ['title' => 'Imaging & cardiovascular', 'points' => ['Radiography', 'Radiation Therapy Technology', 'CT (Cat Scan) Technologist', 'Angiographer', 'Cardiac Cath Radiographer', 'Registered Vascular Technologist', 'Cardiovascular Technologist']],
             ['title' => 'Laboratory & health IT', 'points' => ['Clinical Laboratory Scientist', 'EHR IS/IT Manager', 'Health Information Management', 'Data Entry / DBA']],
             ['title' => 'Clerical & administrative', 'points' => ['Department Physician Coordinator', 'Front Desk Associate', 'Billing', 'Clerical']],
+        ]);
+
+        $this->seedGroups('services_it_specialties', [
+            ['title' => 'Project & delivery', 'points' => ['Project management', 'Strategy & operations', 'Testing & quality assurance']],
+            ['title' => 'Data & engineering', 'points' => ['Data warehousing', 'Regulatory engineering', 'Research & development']],
+            ['title' => 'Operations & support', 'points' => ['Sourcing & inventory management', 'Customer service / call center', 'IT training']],
+            ['title' => 'Business & administration', 'points' => ['Marketing & communications', 'Accounting / finance', 'HR / legal']],
         ]);
     }
 
