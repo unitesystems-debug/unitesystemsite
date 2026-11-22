@@ -110,7 +110,7 @@ class ManageSettings extends Page
                         TextInput::make('footer_legal_text'),
                     ]),
                 Section::make('Accreditation badge')
-                    ->description('Shows The Joint Commission Gold Seal in the bottom-right corner of every page.')
+                    ->description('Shows The Joint Commission Gold Seal in the bottom-right corner of the footer, next to the social links, on every page.')
                     ->columns(2)
                     ->components([
                         Toggle::make('tjc_badge_enabled')
