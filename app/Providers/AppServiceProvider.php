@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
                     'logo' => Setting::get('logo'),
                     'favicon' => Setting::get('favicon'),
                     'social_facebook' => Setting::get('social_facebook'),
-                    'social_linkedin' => Setting::get('social_linkedin'),
+                    'social_linkedin' => Setting::get('social_linkedin', 'https://www.linkedin.com/company/unitesystemsllc/home/?viewAsMember=true'),
                     'social_twitter' => Setting::get('social_twitter'),
                     'social_instagram' => Setting::get('social_instagram'),
                 ],
@@ -47,6 +47,13 @@ class AppServiceProvider extends ServiceProvider
                 'siteNavCtaHref' => \App\Models\ContentText::text('global', 'nav_cta_href', '/contact'),
                 'siteChatEnabled' => Setting::get('chat_enabled', '1') === '1',
                 'siteChatWelcome' => Setting::get('chat_welcome', ''),
+                'siteTjcBadge' => [
+                    'enabled' => Setting::get('tjc_badge_enabled', '1') === '1',
+                    'url' => Setting::get('tjc_badge')
+                        ? \Illuminate\Support\Facades\Storage::url(Setting::get('tjc_badge'))
+                        : asset('images/joint-commission-seal.jpg'),
+                    'link' => Setting::get('tjc_badge_link'),
+                ],
             ]);
         });
     }

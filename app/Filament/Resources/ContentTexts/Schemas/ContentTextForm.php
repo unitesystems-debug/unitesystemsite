@@ -52,6 +52,7 @@ class ContentTextForm
                                 'textarea' => 'Long text (paragraph)',
                                 'richtext' => 'Rich text (formatted)',
                                 'image' => 'Image',
+                                'carousel' => 'Image carousel (multiple images)',
                                 'url' => 'Link / URL',
                             ])
                             ->default('text')
@@ -87,6 +88,24 @@ class ContentTextForm
                             ->image()
                             ->imageEditor()
                             ->visible(fn ($get) => $get('type') === 'image'),
+                        FileUpload::make('value_carousel_images')
+                            ->label('Carousel images')
+                            ->helperText('Upload as many images as you like. Drag to reorder — they will rotate on the site in this order.')
+                            ->disk('public')
+                            ->directory('content')
+                            ->image()
+                            ->imageEditor()
+                            ->multiple()
+                            ->reorderable()
+                            ->appendFiles()
+                            ->visible(fn ($get) => $get('type') === 'carousel')
+                            ->columnSpanFull(),
+                        TextInput::make('value_carousel_interval')
+                            ->label('Rotate every (seconds)')
+                            ->numeric()
+                            ->minValue(1)
+                            ->default(6)
+                            ->visible(fn ($get) => $get('type') === 'carousel'),
                     ]),
             ]);
     }

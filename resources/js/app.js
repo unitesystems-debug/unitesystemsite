@@ -17,6 +17,34 @@ document.addEventListener('alpine:init', () => {
             this.active = i;
         },
     }));
+
+    // Auto-advancing, looping image carousel (e.g. the homepage hero).
+    // Call start()/stop() to control autoplay (e.g. pause on hover);
+    // go(i) jumps to a slide and restarts the timer.
+    Alpine.data('heroCarousel', (total, interval) => ({
+        active: 0,
+        total,
+        interval,
+        timer: null,
+        start() {
+            this.stop();
+            if (this.total <= 1) return;
+            this.timer = setInterval(() => {
+                this.active = (this.active + 1) % this.total;
+            }, this.interval);
+        },
+        stop() {
+            clearInterval(this.timer);
+            this.timer = null;
+        },
+        go(i) {
+            this.active = i;
+            this.start();
+        },
+        destroy() {
+            this.stop();
+        },
+    }));
 });
 
 Alpine.start();

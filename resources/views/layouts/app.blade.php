@@ -155,6 +155,18 @@
         </div>
     </footer>
 
+    @if($siteTjcBadge['enabled'] ?? false)
+        <div class="fixed z-40 bottom-5 right-5 {{ $siteChatEnabled ? 'mb-20' : '' }}">
+            @if($siteTjcBadge['link'] ?? false)
+                <a href="{{ $siteTjcBadge['link'] }}" target="_blank" rel="noopener" title="The Joint Commission — National Quality Approval">
+                    <img src="{{ $siteTjcBadge['url'] }}" alt="The Joint Commission Gold Seal of Approval — National Quality Approval" class="h-16 w-16 sm:h-20 sm:w-20 rounded-full shadow-lg">
+                </a>
+            @else
+                <img src="{{ $siteTjcBadge['url'] }}" alt="The Joint Commission Gold Seal of Approval — National Quality Approval" class="h-16 w-16 sm:h-20 sm:w-20 rounded-full shadow-lg">
+            @endif
+        </div>
+    @endif
+
     @if($siteChatEnabled)
         @include('partials.chat-widget')
     @endif

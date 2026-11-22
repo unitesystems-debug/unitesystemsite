@@ -47,7 +47,7 @@ class ManageSettings extends Page
             'logo' => Setting::get('logo'),
             'favicon' => Setting::get('favicon'),
             'social_facebook' => Setting::get('social_facebook'),
-            'social_linkedin' => Setting::get('social_linkedin'),
+            'social_linkedin' => Setting::get('social_linkedin', 'https://www.linkedin.com/company/unitesystemsllc/home/?viewAsMember=true'),
             'social_twitter' => Setting::get('social_twitter'),
             'social_instagram' => Setting::get('social_instagram'),
             'notify_email' => Setting::get('notify_email'),
@@ -55,6 +55,9 @@ class ManageSettings extends Page
             'chat_enabled' => Setting::get('chat_enabled', '1') === '1',
             'chat_welcome' => Setting::get('chat_welcome', 'Hi! Ask me about our open jobs or services and I\'ll do my best to help.'),
             'footer_legal_text' => Setting::get('footer_legal_text', 'Equal Opportunity Employer.'),
+            'tjc_badge_enabled' => Setting::get('tjc_badge_enabled', '1') === '1',
+            'tjc_badge' => Setting::get('tjc_badge'),
+            'tjc_badge_link' => Setting::get('tjc_badge_link'),
         ]);
     }
 
@@ -105,6 +108,24 @@ class ManageSettings extends Page
                 Section::make('Footer')
                     ->components([
                         TextInput::make('footer_legal_text'),
+                    ]),
+                Section::make('Accreditation badge')
+                    ->description('Shows The Joint Commission Gold Seal in the bottom-right corner of every page.')
+                    ->columns(2)
+                    ->components([
+                        Toggle::make('tjc_badge_enabled')
+                            ->label('Show the badge on the site')
+                            ->columnSpanFull(),
+                        FileUpload::make('tjc_badge')
+                            ->label('Badge image (optional override)')
+                            ->helperText('Leave blank to use the default Joint Commission Gold Seal.')
+                            ->image()
+                            ->disk('public')
+                            ->directory('branding'),
+                        TextInput::make('tjc_badge_link')
+                            ->label('Link (optional)')
+                            ->url()
+                            ->helperText('Where the badge should link to, if anywhere.'),
                     ]),
             ])
             ->statePath('data');

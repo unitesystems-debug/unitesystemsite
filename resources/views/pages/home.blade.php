@@ -18,9 +18,31 @@
             </div>
             <a href="{{ $t('hero_pro_link_href', '/register') }}" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-brand-red-deep hover:underline">{{ $t('hero_pro_link_label') }} <x-app-icon name="ArrowRight" class="w-4 h-4" /></a>
         </div>
+        @php
+            $heroImages = collect($heroCarousel['images']);
+        @endphp
         <div class="relative" data-animate style="--animate-delay: 0.15s">
-            @if($heroImage)
-                <img src="{{ $heroImage }}" alt="" class="rounded-2xl shadow-xl w-full object-cover aspect-[4/3]">
+            @if($heroImages->isNotEmpty())
+                <div
+                    x-data="heroCarousel({{ $heroImages->count() }}, {{ max(1500, $heroCarousel['interval']) }})"
+                    x-init="start()"
+                    @mouseenter="stop()" @mouseleave="start()"
+                    class="relative rounded-2xl shadow-xl aspect-[4/3] overflow-hidden"
+                >
+                    @foreach($heroImages as $i => $url)
+                        <div x-show="active === {{ $i }}" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-500" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0">
+                            <img src="{{ $url }}" alt="" class="absolute inset-0 w-full h-full object-cover">
+                        </div>
+                    @endforeach
+
+                    @if($heroImages->count() > 1)
+                        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10">
+                            @foreach($heroImages as $i => $url)
+                                <button type="button" @click="go({{ $i }})" aria-label="Show slide {{ $i + 1 }}" :class="active === {{ $i }} ? 'w-6 bg-white' : 'w-1.5 bg-white/50'" class="h-1.5 rounded-full transition-all"></button>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
             @else
                 <div class="rounded-2xl bg-gradient-to-br from-brand-red-deep to-navy aspect-[4/3] flex items-center justify-center shadow-xl">
                     <x-app-icon name="HeartPulse" class="w-24 h-24 text-white/30" />

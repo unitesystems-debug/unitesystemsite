@@ -34,6 +34,52 @@ class ContentText extends Model
         return str_starts_with($value, 'http') ? $value : Storage::disk('public')->url($value);
     }
 
+    /**
+     * Resolve a "carousel" type field: a JSON-encoded {images: [...], interval: seconds}
+     * payload. Returns public URLs and the rotation interval in milliseconds.
+     * Also gracefully reads a legacy plain "image" value as a single-slide carousel.
+     */
+    public static function carousel(string $page, string $key): array
+    {
+        $decoded = static::decodeCarousel(static::text($page, $key, ''));
+
+        return [
+            'images' => array_map(
+                fn (string $path) => str_starts_with($path, 'http') ? $path : Storage::disk('public')->url($path),
+                $decoded['images']
+            ),
+            'interval' => $decoded['interval'] * 1000,
+        ];
+    }
+
+    /** Decode a carousel field's stored JSON value into images + interval (seconds). */
+    public static function decodeCarousel(?string $value): array
+    {
+        $decoded = json_decode((string) $value, true);
+
+        if (is_array($decoded) && array_key_exists('images', $decoded)) {
+            return [
+                'images' => array_values(array_filter((array) $decoded['images'])),
+                'interval' => max(1, (int) ($decoded['interval'] ?? 6)),
+            ];
+        }
+
+        // Legacy / plain value: treat a single non-JSON path as one image.
+        return [
+            'images' => blank($value) ? [] : [$value],
+            'interval' => 6,
+        ];
+    }
+
+    /** Encode images + interval (seconds) into a carousel field's stored JSON value. */
+    public static function encodeCarousel(array $images, int $interval = 6): string
+    {
+        return json_encode([
+            'images' => array_values(array_filter($images)),
+            'interval' => max(1, $interval),
+        ]);
+    }
+
     /** All key => value pairs for a page, cached. */
     public static function forPage(string $page): array
     {

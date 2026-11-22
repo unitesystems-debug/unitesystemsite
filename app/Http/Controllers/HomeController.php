@@ -14,7 +14,7 @@ class HomeController extends Controller
 
         return view('pages.home', [
             't' => $text,
-            'heroImage' => ContentText::image('home', 'hero_image'),
+            'heroCarousel' => ContentText::carousel('home', 'hero_image'),
             'trust' => ContentItem::group('home_trust'),
             'challenges' => ContentItem::group('home_challenges'),
             'solutions' => ContentItem::group('home_solutions'),
