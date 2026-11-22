@@ -3,8 +3,11 @@
 namespace App\Filament\Pages;
 
 use App\Models\Setting;
+use App\View\Components\SocialIcon;
 use BackedEnum;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
@@ -46,10 +49,7 @@ class ManageSettings extends Page
             'company_tagline' => Setting::get('company_tagline', 'Transforming healthcare through exceptional talent partnerships and innovative staffing solutions nationwide.'),
             'logo' => Setting::get('logo'),
             'favicon' => Setting::get('favicon'),
-            'social_facebook' => Setting::get('social_facebook'),
-            'social_linkedin' => Setting::get('social_linkedin', 'https://www.linkedin.com/company/unitesystemsllc/home/?viewAsMember=true'),
-            'social_twitter' => Setting::get('social_twitter'),
-            'social_instagram' => Setting::get('social_instagram'),
+            'social_links' => Setting::socialLinks(),
             'notify_email' => Setting::get('notify_email'),
             'candidate_confirmation' => Setting::get('candidate_confirmation', '1') === '1',
             'chat_enabled' => Setting::get('chat_enabled', '1') === '1',
@@ -83,12 +83,33 @@ class ManageSettings extends Page
                         FileUpload::make('favicon')->image()->disk('public')->directory('branding'),
                     ]),
                 Section::make('Social links')
-                    ->columns(2)
+                    ->description('Add as many social/profile links as you like. Each shows as a small icon badge in the footer.')
                     ->components([
-                        TextInput::make('social_facebook')->label('Facebook URL')->url(),
-                        TextInput::make('social_linkedin')->label('LinkedIn URL')->url(),
-                        TextInput::make('social_twitter')->label('X / Twitter URL')->url(),
-                        TextInput::make('social_instagram')->label('Instagram URL')->url(),
+                        Repeater::make('social_links')
+                            ->label('')
+                            ->schema([
+                                Select::make('platform')
+                                    ->options(collect(SocialIcon::PLATFORMS)->map(fn ($p) => $p[0])->all())
+                                    ->required()
+                                    ->native(false)
+                                    ->live()
+                                    ->default('other'),
+                                TextInput::make('label')
+                                    ->label('Custom label (optional)')
+                                    ->helperText('Shown as the tooltip/alt text. Leave blank to use the platform name.')
+                                    ->visible(fn ($get) => $get('platform') === 'other'),
+                                TextInput::make('url')
+                                    ->label('URL')
+                                    ->url()
+                                    ->required()
+                                    ->columnSpanFull(),
+                            ])
+                            ->columns(2)
+                            ->addActionLabel('Add social link')
+                            ->reorderable()
+                            ->collapsible()
+                            ->itemLabel(fn (array $state) => SocialIcon::PLATFORMS[$state['platform'] ?? 'other'][0] ?? 'Link')
+                            ->defaultItems(0),
                     ]),
                 Section::make('Notifications & email')
                     ->description('New applications, registrations and enquiries are emailed here. Configure your Gmail SMTP credentials in the .env file.')
@@ -138,6 +159,8 @@ class ManageSettings extends Page
         foreach ($data as $key => $value) {
             if (is_bool($value)) {
                 $value = $value ? '1' : '0';
+            } elseif (is_array($value)) {
+                $value = json_encode($value);
             }
 
             Setting::set($key, $value);

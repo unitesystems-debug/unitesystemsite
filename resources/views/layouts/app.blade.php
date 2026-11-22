@@ -143,20 +143,21 @@
                     </div>
                 @endforeach
             </div>
-            <div class="mt-12 pt-6 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-ink">
+            <div class="mt-12 pt-6 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-ink">
                 <span>&copy; {{ date('Y') }} {{ $siteCompany['legal'] }}. {{ $siteFooterNote }}</span>
-                <div class="flex items-center gap-4">
-                    @if($siteCompany['social_linkedin'] ?? false)<a href="{{ $siteCompany['social_linkedin'] }}" target="_blank" rel="noopener" class="hover:text-brand-blue-deep">LinkedIn</a>@endif
-                    @if($siteCompany['social_facebook'] ?? false)<a href="{{ $siteCompany['social_facebook'] }}" class="hover:text-brand-blue-deep">Facebook</a>@endif
-                    @if($siteCompany['social_twitter'] ?? false)<a href="{{ $siteCompany['social_twitter'] }}" class="hover:text-brand-blue-deep">X</a>@endif
-                    @if($siteCompany['social_instagram'] ?? false)<a href="{{ $siteCompany['social_instagram'] }}" class="hover:text-brand-blue-deep">Instagram</a>@endif
+                <div class="flex items-center gap-3">
+                    @foreach($siteSocialLinks as $link)
+                        <a href="{{ $link['url'] }}" target="_blank" rel="noopener" class="hover:opacity-80 transition" title="{{ $link['label'] ?? \App\View\Components\SocialIcon::PLATFORMS[$link['platform']][0] ?? 'Link' }}">
+                            <x-social-icon :platform="$link['platform']" :custom-label="$link['label'] ?? null" />
+                        </a>
+                    @endforeach
                     @if($siteTjcBadge['enabled'] ?? false)
                         @if($siteTjcBadge['link'] ?? false)
                             <a href="{{ $siteTjcBadge['link'] }}" target="_blank" rel="noopener" title="The Joint Commission — National Quality Approval">
-                                <img src="{{ $siteTjcBadge['url'] }}" alt="The Joint Commission Gold Seal of Approval — National Quality Approval" class="h-10 w-10 sm:h-12 sm:w-12 rounded-full">
+                                <img src="{{ $siteTjcBadge['url'] }}" alt="The Joint Commission Gold Seal of Approval — National Quality Approval" class="h-16 w-16 sm:h-20 sm:w-20 rounded-full">
                             </a>
                         @else
-                            <img src="{{ $siteTjcBadge['url'] }}" alt="The Joint Commission Gold Seal of Approval — National Quality Approval" class="h-10 w-10 sm:h-12 sm:w-12 rounded-full">
+                            <img src="{{ $siteTjcBadge['url'] }}" alt="The Joint Commission Gold Seal of Approval — National Quality Approval" class="h-16 w-16 sm:h-20 sm:w-20 rounded-full">
                         @endif
                     @endif
                 </div>
